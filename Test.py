@@ -118,6 +118,85 @@ for game in games:
     loser_TOV = loser_statline[16].get_text()
 
 
+    winner_player_stats_location = winner_boxscore.find('tbody')
+    winner_player_statlines = winner_player_stats_location.find_all('tr')
+    del winner_player_statlines[5]
+    
+    winner_PTS_leader = 0
+    winner_TRB_leader = 0
+    winner_AST_leader = 0
+    winner_STL_leader = 0
+    winner_BLK_leader = 0
+    
+
+    for player in winner_player_statlines:
+        if player.get_text() != 'Did Not Play' and player.get_text() != 'Did Not Dress':
+            player_name = player.find('a').get_text()
+            player_stats = player.find_all('td', class_='right')
+            player_TRB = player_stats[12].get_text()
+            player_AST = player_stats[13].get_text()
+            player_STL = player_stats[14].get_text()
+            player_BLK = player_stats[15].get_text()
+            player_PTS = player_stats[18].get_text()
+
+        if int(player_TRB) > int(winner_TRB_leader):
+            winner_TRB_leader = player_TRB
+            winner_TRB_leader_name = player_name
+        if int(player_AST) > int(winner_AST_leader):
+            winner_AST_leader = player_AST
+            winner_AST_leader_name = player_name
+        if int(player_STL) > int(winner_STL_leader):
+            winner_STL_leader = player_STL
+            winner_STL_leader_name = player_name
+        if int(player_BLK) > int(winner_BLK_leader):
+            winner_BLK_leader = player_BLK
+            winner_BLK_leader_name = player_name
+        if int(player_PTS) > int(winner_PTS_leader):
+            winner_PTS_leader = player_PTS
+            winner_PTS_leader_name = player_name
+
+    loser_player_stats_location = loser_boxscore.find('tbody')
+    loser_player_statlines = loser_player_stats_location.find_all('tr')
+    del loser_player_statlines[5]
+    
+    loser_PTS_leader = 0
+    loser_TRB_leader = 0
+    loser_AST_leader = 0
+    loser_STL_leader = 0
+    loser_BLK_leader = 0
+
+    for player in loser_player_statlines:
+        if player.get_text()!= 'Did Not Play' and player.get_text()!= 'Did Not Dress':
+            player_name = player.find('a').get_text()
+            player_stats = player.find_all('td', class_='right')
+            player_TRB = player_stats[12].get_text()
+            player_AST = player_stats[13].get_text()
+            player_STL = player_stats[14].get_text()
+            player_BLK = player_stats[15].get_text()
+            player_PTS = player_stats[18].get_text()
+        
+        if int(player_TRB) > int(loser_TRB_leader):
+            loser_TRB_leader = player_TRB
+            loser_TRB_leader_name = player_name
+        if int(player_AST) > int(loser_AST_leader):
+            loser_AST_leader = player_AST
+            loser_AST_leader_name = player_name
+        if int(player_STL) > int(loser_STL_leader):
+            loser_STL_leader = player_STL
+            loser_STL_leader_name = player_name
+        if int(player_BLK) > int(loser_BLK_leader):
+            loser_BLK_leader = player_BLK
+            loser_BLK_leader_name = player_name
+        if int(player_PTS) > int(loser_PTS_leader):
+            loser_PTS_leader = player_PTS
+            loser_PTS_leader_name = player_name
+    
+
+
+
+
+
+
 
 
 
@@ -125,12 +204,23 @@ for game in games:
                             "team_stats": {"FG": winner_FG, "FGA": winner_FGA, "FG%": winner_FGpercent, 
                                       "3P": winner_3P, "3PA": winner_3PA, "3P%": winner_3Ppercent, 
                                       "FT": winner_FT, "FTA": winner_FTA, "FT%": winner_FTpercent, 
-                                      "ORB": winner_ORB, "TRB": winner_TRB, "TOV": winner_TOV}},
+                                      "ORB": winner_ORB, "TRB": winner_TRB, "TOV": winner_TOV},
+                            "player_stats": {"PTS_leader": [winner_PTS_leader, winner_PTS_leader_name], 
+                                             "TRB_leader": [winner_TRB_leader, winner_TRB_leader], 
+                                             "AST_leader": [winner_AST_leader, winner_AST_leader_name], 
+                                             "STL_leader": [winner_STL_leader, winner_STL_leader_name], 
+                                             "BLK_leader": [winner_BLK_leader, winner_BLK_leader_name]}},
+    
                 "loser": {"team": loser, "score": loser_score,
                           "team_stats": {"FG": loser_FG, "FGA": loser_FGA, "FG%": loser_FGpercent, 
                                     "3P": loser_3P, "3PA": loser_3PA, "3P%": loser_3Ppercent, 
                                      "FT": loser_FT, "FTA": loser_FTA, "FT%": loser_FTpercent, 
-                                     "ORB": loser_ORB, "TRB": loser_TRB, "TOV": loser_TOV}},
+                                     "ORB": loser_ORB, "TRB": loser_TRB, "TOV": loser_TOV},
+                            "player_stats": {"PTS_leader": [loser_PTS_leader, loser_PTS_leader_name], 
+                                             "TRB_leader": [loser_TRB_leader, loser_TRB_leader], 
+                                             "AST_leader": [loser_AST_leader, loser_AST_leader_name], 
+                                             "STL_leader": [loser_STL_leader, loser_STL_leader_name], 
+                                             "BLK_leader": [loser_BLK_leader, loser_BLK_leader_name]}},
                 "close_game": close_game}
 
     game_info.append(thisdict)
@@ -138,45 +228,6 @@ for game in games:
 
 print(game_info)
 
-
-
-
-
-def city_to_abbreviation(team_city):
-    abbreviations =     {
-        'Atlanta': 'ATL',
-        'Boston': 'BOS',
-        'Brooklyn': 'BKN',
-        'Charlotte': 'CHA',
-        'Chicago': 'CHI',
-        'Cleveland': 'CLE',
-        'Dallas': 'DAL',
-        'Denver': 'DEN',
-        'Detroit': 'DET',
-        'Golden State': 'GSW',
-        'Houston': 'HOU',
-        'Indiana': 'IND',
-        'LA Clippers': 'LAC',
-        'LA Lakers': 'LAL',
-        'Memphis': 'MEM',
-        'Miami': 'MIA',
-        'Milwaukee': 'MIL',
-        'Minnesota': 'MIN',
-        'New Orleans': 'NOP',
-        'New York': 'NYK',
-        'Oklahoma City': 'OKC',
-        'Orlando': 'ORL',
-        'Philadelphia': 'PHI',
-        'Phoenix': 'PHO',
-        'Portland': 'POR',
-        'Sacramento': 'SAC',
-        'San Antonio': 'SAS',
-        'Toronto': 'TOR',
-        'Utah': 'UTA',
-        'Washington': 'WAS'
-    }
-
-    return abbreviations.get(team_city, 'Team not found')
 
 
 
