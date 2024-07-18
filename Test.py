@@ -130,9 +130,9 @@ for game in games:
     
 
     for player in winner_player_statlines:
-        if player.get_text() != 'Did Not Play' and player.get_text() != 'Did Not Dress':
-            player_name = player.find('a').get_text()
-            player_stats = player.find_all('td', class_='right')
+        player_name = player.find('a').get_text()
+        player_stats = player.find_all('td', class_='right')
+        if len(player_stats) > 10:
             player_TRB = player_stats[12].get_text()
             player_AST = player_stats[13].get_text()
             player_STL = player_stats[14].get_text()
@@ -166,9 +166,9 @@ for game in games:
     loser_BLK_leader = 0
 
     for player in loser_player_statlines:
-        if player.get_text()!= 'Did Not Play' and player.get_text()!= 'Did Not Dress':
-            player_name = player.find('a').get_text()
-            player_stats = player.find_all('td', class_='right')
+        player_name = player.find('a').get_text()
+        player_stats = player.find_all('td', class_='right')
+        if len(player_stats) > 10:
             player_TRB = player_stats[12].get_text()
             player_AST = player_stats[13].get_text()
             player_STL = player_stats[14].get_text()
@@ -206,7 +206,7 @@ for game in games:
                                       "FT": winner_FT, "FTA": winner_FTA, "FT%": winner_FTpercent, 
                                       "ORB": winner_ORB, "TRB": winner_TRB, "TOV": winner_TOV},
                             "player_stats": {"PTS_leader": [winner_PTS_leader, winner_PTS_leader_name], 
-                                             "TRB_leader": [winner_TRB_leader, winner_TRB_leader], 
+                                             "TRB_leader": [winner_TRB_leader, winner_TRB_leader_name], 
                                              "AST_leader": [winner_AST_leader, winner_AST_leader_name], 
                                              "STL_leader": [winner_STL_leader, winner_STL_leader_name], 
                                              "BLK_leader": [winner_BLK_leader, winner_BLK_leader_name]}},
@@ -217,7 +217,7 @@ for game in games:
                                      "FT": loser_FT, "FTA": loser_FTA, "FT%": loser_FTpercent, 
                                      "ORB": loser_ORB, "TRB": loser_TRB, "TOV": loser_TOV},
                             "player_stats": {"PTS_leader": [loser_PTS_leader, loser_PTS_leader_name], 
-                                             "TRB_leader": [loser_TRB_leader, loser_TRB_leader], 
+                                             "TRB_leader": [loser_TRB_leader, loser_TRB_leader_name], 
                                              "AST_leader": [loser_AST_leader, loser_AST_leader_name], 
                                              "STL_leader": [loser_STL_leader, loser_STL_leader_name], 
                                              "BLK_leader": [loser_BLK_leader, loser_BLK_leader_name]}},
