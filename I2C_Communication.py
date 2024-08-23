@@ -1,3 +1,25 @@
+#!/usr/bin/env python3
+# coding: utf-8
+
+# Raspberry Pi の動作確認 I2C OLED SSD1306 に文字を表示する
+# Copyright (c) 2023 Wataru KUNINO
+
+##############################
+# SSD1306 # RasPi # GPIO
+##############################
+#    SDA  #   3   # GP4
+#    SCL  #   5   # GP5
+##############################
+
+#01234567  #01234567  #01234567  #01234567
+disp_port = [\
+' Hello! ',' RasPi  ','        ','OLED Lib',\
+'  for   ','CPython ','        ','https://',\
+'git.boku','nimo.com','/oled/  ','        ',\
+'        ','   by   ',' Wataru ',' KUNINO ',\
+]
+
+#0123456789ABCDEF  #0123456789ABCDEF
 disp_land = [\
 '  Hello! RasPi  ','    OLED Lib    ',\
 '  for CPython   ','                ',\
@@ -5,23 +27,30 @@ disp_land = [\
 '                ','by Wataru KUNINO',\
 ]
 
-ssd1306 = 0x3C                      
+ssd1306 = 0x3C                           # OLED SSD1306のI2Cアドレス
 d_mode_i = 0x00
 d_mode_w = 0x40
 d_init = b'\xAE\xD5\x80\x8D\x14\x20\x00\xDA\x12\x81\x00\xD9\xF1\xDB\x40\xA4\xA6\xAF'
 d_home = b'\x21\x00\x7F\x22\x00\x07'
 
 import smbus
-from time import sleep                
+from time import sleep                  # timeからsleepを組み込む
 
 def main():
     d_font = load_font()
     print("loaded font len =",len(d_font))
 
-    i2c = smbus.SMBus(1)
+    i2c = smbus.SMBus(1)                    # I2C用オブジェクト生成
     i2c.write_i2c_block_data(ssd1306, d_mode_i, list(d_init)) 
     i2c.write_i2c_block_data(ssd1306, d_mode_i, list(d_home))
-
+    for x in range(8)[::-1]:
+        for y in range(16):
+            i = ord(disp_port[y][x]) - 32
+            if i > 0 and i*8+8 <= len(d_font):
+                i2c.write_i2c_block_data(ssd1306, d_mode_w, list(d_font[i*8:i*8+8]))
+            else:
+                i2c.write_i2c_block_data(ssd1306, d_mode_w, list(d_font[0:8]) )
+    sleep(3)
     for y in range(8)[::-1]:
         for x in range(16)[::-1]:
             i = ord(disp_land[y][x]) - 32
@@ -90,3 +119,79 @@ def load_font():
 
 while True:
     main()
+
+################################################################################
+# 参考文献 8×8 ドット日本語フォント「美咲フォント」
+# https://littlelimit.net/misaki.htm
+'''
+美咲フォントの一部(アルファベット、数字、記号)の全角版(8x8)を使用しました。
+下記は権利者によるライセンス表示です。
+
+　These fonts are free softwares.
+　Unlimited permission is granted to use, copy, and distribute it, with or without modification, either commercially and noncommercially.
+　THESE FONTS ARE PROVIDED "AS IS" WITHOUT WARRANTY.
+
+　これらのフォントはフリー（自由な）ソフトウエアです。
+　あらゆる改変の有無に関わらず、また商業的な利用であっても、自由にご利用、複製、再配布することができますが、全て無保証とさせていただきます。
+
+　Copyright(C) 2002-2012 Num Kadoma
+'''
+################################################################################
+# 参考文献
+# https://bokunimo.net/ichigojam/oled.html
+'''
+             8AA  8AC               8B2
+800 'INIT    mode 描画位置指定        INIT 
+810 let[85],#4000,#2100,#227F,#0700,#D5AE,#8D80,#2014,#DA00,#8112,#D9CF,#DBF1,#A440,#AFA6
+820 ifi2cw(60,#8AA,1,#8B2,18)?"E
+
+
+900 'OUT
+910 ifi2cw(60,#8AA,1,#8AC,6)?"E
+920 for[98]=0to7:for[99]=0to15:copy#8A2,vpeek(7-[98],[99])*8,8:ifi2cw(60,#8AB,1,#8A2,8)?"E
+930 next:next:rtn
+
+' #800 [0]～#87F 128 bytes ロゴ画像64×16px
+' #880[64]～#8A1  34 bytes （空き）
+' #8A2[81]～#8A9   8 bytes OLED データ8×8px
+' #8AA[85]～#8AB   2 bytes OLED モード切替
+' #8AC[86]～#8B1   6 bytes OLED 描画位置指定
+' #8B2[89]～#8C3  18 bytes OLED 初期化用
+' #8C4[98]～#8C7   4 bytes for ループ用変数
+' #8C8[100]～8CB   4 bytes 予備
+
+LED モード切替 2 bytes
+    ADR, VAL, Description
+    #00, #00, Command mode
+    #01, #40, Data mode
+
+OLED 初期化用 18 bytes
+    ADR, VAL, Description
+    #00, #AE, DISPLAY OFF
+    #01, #D5, SET DISPLAY CLOCK DIV
+    #02, #80,     0x80
+    #03, #8D, CHARGE PUMP
+    #04, #14,     0x10(enable)/0x14(disable)
+    #05, #20, MEMORY MODE
+    #06, #00,     0x00
+    #07, #DA, SET COMPINS
+    #08, #12,     0x12
+    #09, #81, SET CONTRAST
+    #0A, #CF,     0x7F(defalt)
+    #0B, #D9, SET PRECHARGE PERIOD
+    #0C, #F1,     0x02(defalt) -> 0xF1
+    #0D, #DB, SET VCOM DETECT
+    #0E, #40,     0x40
+    #0F, #A4, DISPLAY ALLON_RESUME
+    #10, #A6, NORMAL DISPLAY
+    #11, #AF, DISPLAY ON
+
+OLED 描画位置指定 6 bytes
+    ADR, VAL, Description
+    #00, #21, COLUMN ADDR
+    #01, #00,     Column start
+    #02, #7F,     Column end
+    #03, #22, PAGE ADDR
+    #04, #00,     Page start
+    #05, #07,     Page end
+'''
