@@ -2,6 +2,7 @@ import board
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 import os
+import time
 
 
 WIDTH = 128
@@ -43,13 +44,52 @@ font = ImageFont.load_default()
 
 cwd = os.getcwd()
 
-image_path = cwd + "/logos/" + "DAL-2024.jpg"
+abbreviations =     {
+    'Atlanta': 'ATL',
+    'Boston': 'BOS',
+    'Brooklyn': 'BRK',
+    'Charlotte': 'CHO',
+    'Chicago': 'CHI',
+    'Cleveland': 'CLE',
+    'Dallas': 'DAL',
+    'Denver': 'DEN',
+    'Detroit': 'DET',
+    'Golden State': 'GSW',
+    'Houston': 'HOU',
+    'Indiana': 'IND',
+    'LA Clippers': 'LAC',
+    'LA Lakers': 'LAL',
+    'Memphis': 'MEM',
+    'Miami': 'MIA',
+    'Milwaukee': 'MIL',
+    'Minnesota': 'MIN',
+    'New Orleans': 'NOP',
+    'New York': 'NYK',
+    'Oklahoma City': 'OKC',
+    'Orlando': 'ORL',
+    'Philadelphia': 'PHI',
+    'Phoenix': 'PHO',
+    'Portland': 'POR',
+    'Sacramento': 'SAC',
+    'San Antonio': 'SAS',
+    'Toronto': 'TOR',
+    'Utah': 'UTA',
+    'Washington': 'WAS'
+}
 
-image = Image.open(image_path)
 
-image = image.convert('1')
-image = image.resize((128, 64))
+for key in abbreviations:
+    print(key)
+    image_path = cwd + "/logos/" + key + ".jpg"
+    image = Image.open(image_path)
+    image = image.convert('1')
+    image = image.resize((128, 64))
+    
+    #Display image
+    oled.image(image)
+    oled.show()
+    time.sleep(20)
 
-# Display image
-oled.image(image)
-oled.show()
+
+
+
