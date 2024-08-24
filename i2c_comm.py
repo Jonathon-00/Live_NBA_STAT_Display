@@ -42,6 +42,13 @@ font = ImageFont.load_default()
 #     fill=255,
 # )
 
+# oled.image(image)
+ # oled.show()
+
+
+
+
+
 cwd = os.getcwd()
 
 abbreviations =     {
@@ -82,13 +89,18 @@ for key in abbreviations:
     print(key)
     image_path = cwd + "/logos/" + key + ".jpg"
     image = Image.open(image_path)
+    imageSize = image.size
     image = image.convert('1')
-    image = image.resize((128, 64))
+    cX = 10
+    cY = 10
+    image.paste(image, (cX, cY, cX+imageSize[0], cY+imageSize[1]))
     
     #Display image
     oled.image(image)
     oled.show()
     time.sleep(20)
+
+
 
 
 
