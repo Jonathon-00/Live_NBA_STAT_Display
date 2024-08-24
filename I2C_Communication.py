@@ -35,7 +35,7 @@ def main():
     # Loop through each line of text in disp_land
     for y, line in enumerate(disp_land):
         # Create the font bitmap for each line of text
-        font_bitmap = create_font_bitmap(line, font_size=16)  # Adjust font_size as needed
+        font_bitmap = create_font_bitmap(line, font_size=2)  # Adjust font_size as needed
         # Send the bitmap to the OLED display
         for i in range(0, len(font_bitmap), 16):  # Send data in chunks of 16 bytes
             i2c.write_i2c_block_data(ssd1306, d_mode_w, list(font_bitmap[i:i+16]))
