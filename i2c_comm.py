@@ -40,7 +40,7 @@ font = ImageFont.load_default()
 #     fill=255,
 # )
 
-image = Image.open("oklahoma-city-thunder-logo.jpg")
+image = Image.open("DAL-2024.jpg")
 
 image = image.convert('1')
 image = image.resize((128, 64))
