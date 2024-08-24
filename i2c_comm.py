@@ -50,6 +50,9 @@ abbreviations = {
     'Washington': 'WAS'
 }
 
+half_width = 64
+
+
 for key in abbreviations:
     # Create a new blank image
     image = Image.new('1', (WIDTH, HEIGHT))
@@ -61,7 +64,7 @@ for key in abbreviations:
     print(f"Original size: {imageSize}")
 
     # Resize the image
-    scale = min(WIDTH / imageSize[0], HEIGHT / imageSize[1])
+    scale = min(half_width / imageSize[0], HEIGHT / imageSize[1])
     newSize = (int(imageSize[0] * scale), int(imageSize[1] * scale))
     imageClip = imageClip.resize(newSize)
     imageSize = imageClip.size
@@ -70,8 +73,11 @@ for key in abbreviations:
     # Convert image to 1-bit color
     imageClip = imageClip.convert('1')
 
-    # Calculate center position
-    cX = (WIDTH - imageSize[0]) // 2
+    cX = (half_width - imageSize[0]) // 2
+    cY = (HEIGHT - imageSize[1]) // 2
+    image.paste(imageClip, (cX, cY))
+
+    cX = ((half_width - imageSize[0]) // 2) + half_width
     cY = (HEIGHT - imageSize[1]) // 2
     image.paste(imageClip, (cX, cY))
 
