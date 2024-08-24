@@ -10,14 +10,10 @@ BORDER = 3
 i2c = board.I2C()  # uses board.SCL and board.SDA
 oled = adafruit_ssd1306.SSD1306_I2C(WIDTH, HEIGHT, i2c, addr=0x3C)
 
-# Clear display.
+# display set up
 oled.fill(0)
 oled.show()
-
-# Create blank image for drawing.
 image = Image.new("1", (oled.width, oled.height))
-
-# Get drawing object to draw on image.
 draw = ImageDraw.Draw(image)
 
 # Draw a white background
@@ -34,15 +30,17 @@ draw.rectangle(
 font = ImageFont.load_default()
 
 # Draw Some Text
-text = "Hello World!"
-bbox = font.getbbox(text)
-(font_width, font_height) = bbox[2] - bbox[0], bbox[3] - bbox[1]
-draw.text(
-    (oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),
-    text,
-    font=font,
-    fill=255,
-)
+# text = "Hello World!"
+# bbox = font.getbbox(text)
+# (font_width, font_height) = bbox[2] - bbox[0], bbox[3] - bbox[1]
+# draw.text(
+#     (oled.width // 2 - font_width // 2, oled.height // 2 - font_height // 2),
+#     text,
+#     font=font,
+#     fill=255,
+# )
+
+image = Image.open(oklahoma-city-thunder-logo.jpg)
 
 # Display image
 oled.image(image)
