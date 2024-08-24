@@ -1,6 +1,7 @@
 import board
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
+import os
 
 
 WIDTH = 128
@@ -40,7 +41,11 @@ font = ImageFont.load_default()
 #     fill=255,
 # )
 
-image = Image.open("/logos/DAL-2024.jpg")
+cwd = os.getcwd()
+
+image_path = cwd + "/logos/" + "DAL-2024.jpg"
+
+image = Image.open(image_path)
 
 image = image.convert('1')
 image = image.resize((128, 64))
