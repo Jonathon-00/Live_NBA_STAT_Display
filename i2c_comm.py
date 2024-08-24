@@ -90,10 +90,14 @@ for key in abbreviations:
     image_path = cwd + "/logos/" + key + ".jpg"
     image = Image.open(image_path)
     imageSize = image.size
+
+    if imageSize[0] > WIDTH or imageSize[1] > HEIGHT:
+        scale = min(WIDTH / imageSize[0], HEIGHT / imageSize[1])
+        image = image.resize((int(imageSize[0] * scale), int(imageSize[1] * scale)), Image.ANTIALIAS)
+
+
     image = image.convert('1')
-    cX = 10
-    cY = 10
-    image.paste(image, (cX, cY, cX+imageSize[0], cY+imageSize[1]))
+
     
     #Display image
     oled.image(image)
