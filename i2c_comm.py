@@ -101,7 +101,7 @@ for key in abbreviations:
 
     cX = 1
     cY = 1
-    image.paste(image, (cX, cY, cX+imageSize[0], cY+imageSize[1]))
+    draw.paste(image, (cX, cY, cX+imageSize[0], cY+imageSize[1]))
     
     #Display image
     oled.image(image)
