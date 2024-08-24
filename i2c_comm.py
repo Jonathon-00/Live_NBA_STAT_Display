@@ -90,11 +90,12 @@ for key in abbreviations:
     image_path = cwd + "/logos/" + key + ".jpg"
     image = Image.open(image_path)
     imageSize = image.size
-
+    print(imageSize)
     if imageSize[0] > WIDTH or imageSize[1] > HEIGHT:
         scale = min(WIDTH / imageSize[0], HEIGHT / imageSize[1])
-        image = image.resize((int(imageSize[0] * scale), int(imageSize[1] * scale)), Image.ANTIALIAS)
+        image = image.resize(int(imageSize[0] * scale), int(imageSize[1] * scale))
 
+    print(image.size)
 
     image = image.convert('1')
 
