@@ -43,6 +43,7 @@ font = ImageFont.load_default()
 image = Image.open("oklahoma-city-thunder-logo.jpg")
 
 image = image.convert('1')
+image = image.resize((128, 64))
 
 # Display image
 oled.image(image)
