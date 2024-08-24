@@ -40,7 +40,7 @@ font = ImageFont.load_default()
 #     fill=255,
 # )
 
-image = Image.open(oklahoma-city-thunder-logo.jpg)
+image = Image.open("oklahoma-city-thunder-logo.jpg")
 
 # Display image
 oled.image(image)
