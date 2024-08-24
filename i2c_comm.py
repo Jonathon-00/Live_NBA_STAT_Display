@@ -85,30 +85,32 @@ abbreviations =     {
 }
 
 
+
+
 for key in abbreviations:
-    print(key)
+    
+    image = Image.new('1', (WIDTH, HEIGHT))
     image_path = cwd + "/logos/" + key + ".jpg"
-    image = Image.open(image_path)
-    imageSize = image.size
+    imageClip = Image.open(image_path)
+    imageSize = imageClip.size
     print(imageSize)
     while imageSize[0] > WIDTH or imageSize[1] > HEIGHT:
         scale = min(WIDTH / imageSize[0], HEIGHT / imageSize[1])
-        image = image.resize((int(imageSize[0] * scale), int(imageSize[1] * scale)))
+        imageClip = imageClip.resize((int(imageSize[0] * scale), int(imageSize[1] * scale)))
         imageSize = image.size
         print(image.size)
 
-    image = image.convert('1')
+    imageClip = imageClip.convert('1')
 
     cX = 1
     cY = 1
-    draw.paste(image, (cX, cY, cX+imageSize[0], cY+imageSize[1]))
+    image.paste(imageClip, (cX, cY, cX+imageSize[0], cY+imageSize[1]))
     
     #Display image
     oled.image(image)
     oled.show()
+    print(key)
     time.sleep(10)
-
-
 
 
 
