@@ -85,8 +85,8 @@ for key in abbreviations:
     text = "vs"
 
     font = ImageFont.load_default()
-
-    text_width, text_height = draw.textsize(text, font=font)
+    bbox = font.getbbox(text)
+    (text_width, text_height) = bbox[2] - bbox[0], bbox[3] - bbox[1]
     textX = (WIDTH - text_width) // 2
     textY = (HEIGHT - text_height) // 2
 
