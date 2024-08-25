@@ -50,12 +50,13 @@ abbreviations = {
     'Washington': 'WAS'
 }
 
-half_width = 64
+half_width = 55
 
 
 for key in abbreviations:
     # Create a new blank image
     image = Image.new('1', (WIDTH, HEIGHT))
+    draw = ImageDraw.Draw(image)
     
     # Load the image
     image_path = os.path.join(cwd, "logos", f"{key}.jpg")
@@ -73,13 +74,26 @@ for key in abbreviations:
     # Convert image to 1-bit color
     imageClip = imageClip.convert('1')
 
-    cX = (half_width - imageSize[0]) // 2
-    cY = (HEIGHT - imageSize[1]) // 2
-    image.paste(imageClip, (cX, cY))
+    cX_left = (half_width - imageSize[0]) // 2
+    cY_left = (HEIGHT - imageSize[1]) // 2
+    image.paste(imageClip, (cX_left, cY_left))
 
-    cX = ((half_width - imageSize[0]) // 2) + half_width
-    cY = (HEIGHT - imageSize[1]) // 2
-    image.paste(imageClip, (cX, cY))
+    cX_right = cX_left + HALF_WIDTH
+    cY_right = cY_left
+    image.paste(imageClip, (cX_right, cY_right))
+    
+    text = "vs"
+
+    font = ImageFont.load_default()
+
+    text_width, text_height = draw.textsize(text, font=font)
+    textX = (WIDTH - text_width) // 2
+    textY = (HEIGHT - text_height) // 2
+
+    draw.text((textX, textY), text, font=font, fill=255)
+    
+    
+    image = image.rotate(90)
 
     # Display image
     oled.image(image)
