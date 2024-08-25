@@ -50,7 +50,7 @@ abbreviations = {
     'Washington': 'WAS'
 }
 
-half_width = 55
+half_width = 58
 
 
 for key in abbreviations:
@@ -62,23 +62,12 @@ for key in abbreviations:
     image_path = os.path.join(cwd, "logos", f"{key}.jpg")
     imageClip = Image.open(image_path)
     imageSize = imageClip.size
-    print(f"Original size: {imageSize}")
 
-    # Resize the image
-    scale = min(half_width / imageSize[0], HEIGHT / imageSize[1])
-    newSize = (int(imageSize[0] * scale), int(imageSize[1] * scale))
-    imageClip = imageClip.resize(newSize)
-    imageSize = imageClip.size
-    print(f"Resized to: {imageSize}")
-
-    # Convert image to 1-bit color
-    imageClip = imageClip.convert('1')
-
-    cX_left = (imageSize[0]) // 2
+    cX_left = 0
     cY_left = (HEIGHT - imageSize[1]) // 2
     image.paste(imageClip, (cX_left, cY_left))
 
-    cX_right = (imageSize[0]) // 2 + 64
+    cX_right = WIDTH-imageSize[0]
     cY_right = cY_left
     image.paste(imageClip, (cX_right, cY_right))
     
@@ -97,4 +86,4 @@ for key in abbreviations:
     oled.image(image)
     oled.show()
     print(f"Displayed: {key}")
-    time.sleep(10)
+    time.sleep(4)
