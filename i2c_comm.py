@@ -78,7 +78,7 @@ for key in abbreviations:
     cY_left = (HEIGHT - imageSize[1]) // 2
     image.paste(imageClip, (cX_left, cY_left))
 
-    cX_right = cX_left + half_width
+    cX_right = (half_width - imageSize[0]) // 2 + 64
     cY_right = cY_left
     image.paste(imageClip, (cX_right, cY_right))
     
