@@ -3,6 +3,8 @@ import requests
 
 website = 'https://www.basketball-reference.com'
 
+
+
 class get_data:
     def __init__(self):
         self.games = self.get_recent_games()
