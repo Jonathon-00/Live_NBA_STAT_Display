@@ -74,11 +74,11 @@ for key in abbreviations:
     # Convert image to 1-bit color
     imageClip = imageClip.convert('1')
 
-    cX_left = (half_width - imageSize[0]) // 2
+    cX_left = (imageSize[0]) // 2
     cY_left = (HEIGHT - imageSize[1]) // 2
     image.paste(imageClip, (cX_left, cY_left))
 
-    cX_right = (half_width - imageSize[0]) // 2 + 64
+    cX_right = (imageSize[0]) // 2 + 64
     cY_right = cY_left
     image.paste(imageClip, (cX_right, cY_right))
     
