@@ -91,9 +91,7 @@ for key in abbreviations:
     textY = (HEIGHT - text_height) // 2
 
     draw.text((textX, textY), text, font=font, fill=255)
-    
-    
-    image = image.rotate(90)
+
 
     # Display image
     oled.image(image)
